@@ -222,7 +222,9 @@
     "publishLibrary": "Publish",
     "submit": "Submit",
     "confirm": "Confirm",
-    "embeddableInteractionButton": "Click to interact"
+    "embeddableInteractionButton": "Click to interact",
+    "toggleZenMode": "Toggle zen mode.",
+    "enterZenMode":"Enter zen mode"
   },
   "alerts": {
     "clearReset": "This will clear the whole canvas. Are you sure?",

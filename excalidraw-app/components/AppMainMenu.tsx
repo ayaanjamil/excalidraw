@@ -20,9 +20,9 @@ export const AppMainMenu: React.FC<{
 }> = React.memo((props) => {
   return (
     <MainMenu>
-      <MainMenu.DefaultItems.LoadScene />
-      <MainMenu.DefaultItems.SaveToActiveFile />
-      <MainMenu.DefaultItems.Export />
+      {/* <MainMenu.DefaultItems.LoadScene /> */}
+      {/* <MainMenu.DefaultItems.SaveToActiveFile /> */}
+      {/* <MainMenu.DefaultItems.Export /> */}
       <MainMenu.DefaultItems.SaveAsImage />
       {props.isCollabEnabled && (
         <MainMenu.DefaultItems.LiveCollaborationTrigger
@@ -34,6 +34,8 @@ export const AppMainMenu: React.FC<{
       <MainMenu.DefaultItems.SearchMenu />
       <MainMenu.DefaultItems.Help />
       <MainMenu.DefaultItems.ClearCanvas />
+      <MainMenu.Separator />
+      <MainMenu.DefaultItems.ToggleZenMode />
       <MainMenu.Separator />
       <MainMenu.ItemLink
         icon={ExcalLogo}

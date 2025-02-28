@@ -42,6 +42,8 @@ import { THEME } from "../../constants";
 import type { Theme } from "../../element/types";
 import { trackEvent } from "../../analytics";
 import "./DefaultItems.scss";
+import { actionToggleZenMode } from "../../actions";
+
 
 export const LoadScene = () => {
   const { t } = useI18n();
@@ -389,3 +391,26 @@ export const LiveCollaborationTrigger = ({
 };
 
 LiveCollaborationTrigger.displayName = "LiveCollaborationTrigger";
+
+
+export const ToggleZenMode = () => {
+  const { t } = useI18n();
+  const actionManager = useExcalidrawActionManager();
+  const appState = useUIAppState();
+
+  if (!actionManager.isActionEnabled(actionToggleZenMode)) {
+    return null;
+  }
+
+  return (
+    <DropdownMenuItem
+      icon={usersIcon}
+      onSelect={() => actionManager.executeAction(actionToggleZenMode)}
+      data-testid="toggle-zen-mode"
+      aria-label={t("buttons.toggleZenMode")}
+    >
+      {appState.zenModeEnabled ? t("buttons.exitZenMode") : t("buttons.enterZenMode")}
+    </DropdownMenuItem>
+  );
+};
+ToggleZenMode.displayName = "ToggleZenMode";

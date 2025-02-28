@@ -54,6 +54,7 @@ const MainMenu = Object.assign(
               })}
             >
               {children}
+              <DefaultItems.ToggleZenMode />
               {device.editor.isMobile && appState.collaborators.size > 0 && (
                 <fieldset className="UserList-Wrapper">
                   <legend>{t("labels.collaborators")}</legend>
