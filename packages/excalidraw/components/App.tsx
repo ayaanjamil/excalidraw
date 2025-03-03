@@ -3354,6 +3354,14 @@ class App extends React.Component<AppProps, AppState> {
       const imageURLs = mixedContent
         .filter((node) => node.type === "imageUrl")
         .map((node) => node.value);
+
+      const currentImageCount = this.scene
+        .getNonDeletedElements()
+        .filter((element) => isImageElement(element)).length;
+      if (currentImageCount + imageURLs.length > 5) {
+        this.showUpgradePopupForImageLimit();
+        return;
+      }
       const responses = await Promise.all(
         imageURLs.map(async (url) => {
           try {
@@ -3830,20 +3838,46 @@ class App extends React.Component<AppProps, AppState> {
    * */
   public addFiles: ExcalidrawImperativeAPI["addFiles"] = withBatchedUpdates(
     (files) => {
+      const existingImages = Object.values(this.files).filter((file) =>
+        file.mimeType.startsWith("image/"),
+      );
+  
+      if (existingImages.length >= 5) {
+        this.setState({
+          errorMessage: "You've reached the limit of 5 images. Upgrade to Pro for unlimited images!"
+        });
+        return;
+      }
+  
       const { addedFiles } = this.addMissingFiles(files);
-
+  
       this.clearImageShapeCache(addedFiles);
       this.scene.triggerUpdate();
-
       this.addNewImagesToImageCache();
     },
   );
+
+  private isImageLimitReached = (): boolean => {
+    const imageElements = this.scene
+      .getNonDeletedElements()
+      .filter((element) => isImageElement(element));
+    return imageElements.length >= 5;
+  };
+  
+  private showUpgradePopupForImageLimit = (): void => {
+    this.setToast({
+      message: "You've reached the limit of 5 images. Upgrade to Pro for unlimited images!",
+      closable: true,
+      duration: 6000  // show for 6 seconds
+    });
+  };
 
   private addMissingFiles = (
     files: BinaryFiles | BinaryFileData[],
     replace = false,
   ) => {
     const nextFiles = replace ? {} : { ...this.files };
+
     const addedFiles: BinaryFiles = {};
 
     const _files = Array.isArray(files) ? files : Object.values(files);
@@ -3877,7 +3911,7 @@ class App extends React.Component<AppProps, AppState> {
 
     return { addedFiles };
   };
-
+  
   public updateScene = withBatchedUpdates(
     <K extends keyof AppState>(sceneData: {
       elements?: SceneData["elements"];
@@ -5111,6 +5145,7 @@ class App extends React.Component<AppProps, AppState> {
         : null,
     });
   }
+  
 
   private getTextBindableContainerAtPosition(x: number, y: number) {
     const elements = this.scene.getNonDeletedElements();
@@ -9766,6 +9801,12 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
+    // Add this check
+    if (this.isImageLimitReached()) {
+      this.showUpgradePopupForImageLimit();
+      return;
+    }
+
     this.scene.insertElement(imageElement);
 
     try {
@@ -9846,6 +9887,11 @@ class App extends React.Component<AppProps, AppState> {
         { clientX, clientY },
         this.state,
       );
+
+      if (this.isImageLimitReached()) {
+        this.showUpgradePopupForImageLimit();
+        return;
+      }
 
       const imageFile = await fileOpen({
         description: "Image",
@@ -10170,6 +10216,10 @@ class App extends React.Component<AppProps, AppState> {
 
         if (file?.type === MIME_TYPES.png || file?.type === MIME_TYPES.svg) {
           try {
+            if (this.isImageLimitReached()) {
+              this.showUpgradePopupForImageLimit();
+              return;
+            }
             const scene = await loadFromBlob(
               file,
               this.state,
@@ -10197,6 +10247,11 @@ class App extends React.Component<AppProps, AppState> {
         // if no scene is embedded or we fail for whatever reason, fall back
         // to importing as regular image
         // ---------------------------------------------------------------------
+
+        if (this.isImageLimitReached()) {
+          this.showUpgradePopupForImageLimit();
+          return;
+        }
 
         const imageElement = this.createImageElement({ sceneX, sceneY });
         this.insertImageElement(imageElement, file);
@@ -10841,6 +10896,7 @@ class App extends React.Component<AppProps, AppState> {
       actionDeleteSelected,
     ];
   };
+  
 
   private handleWheel = withBatchedUpdates(
     (
