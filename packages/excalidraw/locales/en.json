@@ -252,6 +252,7 @@
   "errors": {
     "unsupportedFileType": "Unsupported file type.",
     "imageInsertError": "Couldn't insert image. Try again later...",
+    "imageLimitReached": "You've reached the limit of 5 images. Upgrade to Pro for unlimited images!",
     "fileTooBig": "File is too big. Maximum allowed size is {{maxSize}}.",
     "svgImageInsertError": "Couldn't insert SVG image. The SVG markup looks invalid.",
     "failedToFetchImage": "Failed to fetch image.",

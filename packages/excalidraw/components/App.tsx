@@ -3844,7 +3844,7 @@ class App extends React.Component<AppProps, AppState> {
   
       if (existingImages.length >= 5) {
         this.setState({
-          errorMessage: "You've reached the limit of 5 images. Upgrade to Pro for unlimited images!"
+          errorMessage: t("errors.imageLimitReached"),
         });
         return;
       }
@@ -3866,7 +3866,7 @@ class App extends React.Component<AppProps, AppState> {
   
   private showUpgradePopupForImageLimit = (): void => {
     this.setToast({
-      message: "You've reached the limit of 5 images. Upgrade to Pro for unlimited images!",
+      message: t("errors.imageLimitReached"),
       closable: true,
       duration: 6000  // show for 6 seconds
     });
