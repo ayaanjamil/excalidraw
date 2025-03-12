@@ -208,6 +208,7 @@
   },
   "errors": {
     "unsupportedFileType": "Tiedostotyyppiä ei tueta.",
+    "imageLimitReached": "Olet saavuttanut 5 kuvan rajan. Päivitä Pro-tasolle, niin saat rajattomasti kuvia!",
     "imageInsertError": "Kuvan lisääminen epäonnistui. Yritä myöhemmin uudelleen...",
     "fileTooBig": "Tiedosto on liian suuri. Suurin sallittu koko on {{maxSize}}.",
     "svgImageInsertError": "SVG- kuvaa ei voitu lisätä. Tiedoston SVG-sisältö näyttää virheelliseltä.",
